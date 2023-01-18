@@ -134,6 +134,12 @@ Here are code snippets for some common installation methods (use only one):
     line_down = '<M-j>',
     line_up = '<M-k>',
   },
+
+  -- Options which control moving behavior
+  options = {
+    -- Automatically reindent selection during linewise vertical move
+    reindent_linewise = true,
+  },
 }
 ```
 
