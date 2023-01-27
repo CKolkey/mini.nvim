@@ -141,6 +141,13 @@ Helpers.new_child_neovim = function()
   child.expect_screenshot = function(opts, path, screenshot_opts)
     if child.fn.has('nvim-0.8') == 0 then MiniTest.skip('Screenshots are tested for Neovim>=0.8 (for simplicity).') end
 
+    -- TODO: Remove this when `screenstring()` issue is resolved
+    if child.fn.has('nvim-0.9') == 1 then
+      MiniTest.skip(
+        'Screenshots for Neovim>=0.9 are temporarily disabled. See https://github.com/neovim/neovim/issues/21886.'
+      )
+    end
+
     MiniTest.expect.reference_screenshot(child.get_screenshot(screenshot_opts), path, opts)
   end
 
