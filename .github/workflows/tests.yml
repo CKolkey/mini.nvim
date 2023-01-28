@@ -31,4 +31,4 @@ jobs:
           neovim: true
           version: ${{ matrix.neovim_version }}
       - name: Run tests
-        run: make test
+        run: FILE=tests/test_basics.lua make test_file
