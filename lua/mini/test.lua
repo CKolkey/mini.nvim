@@ -1040,7 +1040,6 @@ end
 MiniTest.new_child_neovim = function()
   local child = {}
   local start_args, start_opts
-  local child_buf_id = vim.api.nvim_create_buf(false, true)
 
   local ensure_running = function()
     if child.is_running() then return end
@@ -1078,11 +1077,8 @@ MiniTest.new_child_neovim = function()
     local full_args = { opts.nvim_executable, '--clean', '-n', '--listen', job.address }
     vim.list_extend(full_args, args)
 
-    if not vim.api.nvim_buf_is_valid(child_buf_id) then child_buf_id = vim.api.nvim_create_buf(false, true) end
-    vim.api.nvim_buf_call(child_buf_id, function()
-      vim.o.modified = false
-      vim.fn.termopen(full_args)
-    end)
+    vim.fn.jobstart(full_args, { pty = true })
+
     -- job.stdin, job.stdout, job.stderr = vim.loop.new_pipe(false), vim.loop.new_pipe(false), vim.loop.new_pipe(false)
     -- job.handle, job.pid = vim.loop.spawn(opts.nvim_executable, {
     --   stdio = { job.stdin, job.stdout, job.stderr },
@@ -1103,7 +1099,6 @@ MiniTest.new_child_neovim = function()
       child.stop()
     end
 
-    vim.rpcrequest(job.channel, 'nvim_exec', 'set lines=24 columns=80', false)
     child.job = job
     start_args, start_opts = args, opts
 
